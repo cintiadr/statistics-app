@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.hello = (event, context, callback) => {
+module.exports.statistics = (event, context, callback) => {
   const response = {
     statusCode: 200,
     headers: {
@@ -13,17 +13,6 @@ module.exports.hello = (event, context, callback) => {
   callback(null, response);
 };
 
-module.exports.healthcheck = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    headers: {
-      "Content-Type" : "text/html"
-    },
-    body: 'Super healthy Kale!',
-  };
-  console.log(event);
-  callback(null, response);
-};
 
 module.exports.metadata = (event, context, callback) => {
   var pjson = require('./package.json');

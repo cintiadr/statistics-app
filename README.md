@@ -1,55 +1,56 @@
-# Hello world - Serverless edition
+# Sample application
 
 [![Build Status](https://travis-ci.org/cintiadr/sample-lambda-app.svg?branch=master)](https://travis-ci.org/cintiadr/sample-lambda-app)
 
-This repository contains an AWS lambda + API gateway hello world application.
-
-It's using awesome [Serverless framework](https://serverless.com/) to deploy (almost) all infrastructure needed.
+This code is heavily based on [Serverless Hello world example](https://github.com/cintiadr/sample-lambda-app) I've created a while ago and recently upgraded.
 
 
-#### Development environment
-  - <https://dev.cintia.me>: hello world endpoint
-  - <https://dev.cintia.me/healthcheck>: health check (!)
-  - <https://dev.cintia.me/metadata>: Basic application information, like git commit and version (imported from _package.json_)
-
-#### Production environment
-  - <https://prd.cintia.me>
-  - <https://prd.cintia.me/healthcheck>
-  - <https://prd.cintia.me/metadata>
+## Building and running locally
 
 ### Requirements
 
-AWS requirements(_conf.json_):
-  - ACM Certificate
+  - Node 10.x (can be via `nvm use`)
+
+### Setup
+
+  - `./scripts/install.sh` to install all dependencies
+
+### Running tests
+
+## My production environment
+
+  - <https://statistics.cintia.me>
+  - <https://statistics.cintia.me/metadata>
+
+
+
+## Deploying to your AWS account
+
+### Requirements
+
+Setup your AWS account the following requirements:
+  - ACM Certificate for the desired domain
   - Route53 DNS zone
 
-Local requirements:
-  - AWS cli and credentials to deploy
-  - Node 10.x (can be via `nvm use`)
-  - `./scripts/install.sh` to install all dependencies
+Edit _conf.json_ to reflect them
+
+Also ensure you have AWS cli installed and credentials to deploy.
+
+
 
 ### Deploying changes
 ```
-# Build cloudformation for dev
-$ ENVIRONMENT=dev npm run package
+# Build cloudformation
+$ npm run package
 
-# Deploying to dev
-$ ENVIRONMENT=dev npm run deploy
+# Deploying to AWS
+$ npm run deploy
 
-# Running smoke tests against dev
-$ ENVIRONMENT=dev npm run smoke-tests
+# Running smoke tests against environment
+$ npm run smoke-tests
 ```
 
-Travis is configured to deploy branch `production` to the production environment.
-This branch should be pushed locally.
-
-(Yes, technically this breaks the whole concept of a proper pipeline,
-but that's the way travis works.)
-```
-$ ./scripts/push-prd.sh
-```
-
-### Considerations
+### Design Considerations
   - This code is in node due to the better integration with serverless framework,
   but I'm not a node expert. Take my code with a pinch of salt;
   - Lambda is running outside VPC; security considerations apply if your lambda
@@ -66,4 +67,4 @@ $ ./scripts/push-prd.sh
   but you should check [Serverless Testing guide](https://serverless.com/framework/docs/providers/aws/guide/testing/)
   if your lambda is more complex than that.
   Serverless offers a lot of help for local tests and debugging;
-  - Smoke tests are done using Jasmine framework;
+  - Smoke tests after deployment are done using Jasmine framework;

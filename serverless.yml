@@ -1,4 +1,4 @@
-service: sample-lambda-app
+service: statistics-app
 
 custom: ${file(conf.json)}
 
@@ -6,7 +6,7 @@ provider:
   name: aws
   runtime: nodejs10.x
   region: ap-southeast-2
-  stage: ${opt:stage, 'dev'}
+  stage: prd
 
 package:
   exclude:
@@ -18,7 +18,7 @@ package:
     - node_modules/**  # our code doesn't use any runtime dependency
 
 functions:
-  statistics:
+  handler:
     handler: handler.statistics
     events:
       - http:
@@ -42,7 +42,7 @@ resources:
      Type: 'AWS::Route53::RecordSet'
      Properties:
        HostedZoneId: ${self:custom.zoneId}
-       Name: "statistics-${self:provider.stage}.${self:custom.zoneName}"
+       Name: "${self:custom.appName}.${self:custom.zoneName}"
        Type: "A"
        AliasTarget:
          DNSName: { Fn::GetAtt: [ ApiGatewayDomainName, 'DistributionDomainName'] }
@@ -51,13 +51,13 @@ resources:
       Type: AWS::ApiGateway::DomainName
       Properties:
         CertificateArn: ${self:custom.certificate}
-        DomainName: "statistics-${self:provider.stage}.${self:custom.zoneName}"
+        DomainName: "${self:custom.appName}.${self:custom.zoneName}"
    ApiGatewayBase:
       Type: "AWS::ApiGateway::BasePathMapping"
-      DependsOn: StatisticsLambdaPermissionApiGateway  #https://github.com/serverless/serverless/issues/2233
+      DependsOn: HandlerLambdaPermissionApiGateway  #https://github.com/serverless/serverless/issues/2233
       Properties:
         BasePath: ''
-        DomainName: "statistics-${self:provider.stage}.${self:custom.zoneName}"
+        DomainName: "${self:custom.appName}.${self:custom.zoneName}"
         RestApiId:
           Ref: ApiGatewayRestApi
-        Stage: ${self:provider.stage}
+        Stage: prd
