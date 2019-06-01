@@ -1,0 +1,18 @@
+{
+  "name": "sample-lambda-app",
+  "version": "1.1.0",
+  "description": "Some awesome hello world",
+  "devDependencies": {
+    "jasmine": "^3.4.0",
+    "serverless": "^1.44.1",
+    "request": "^2.88.0"
+  },
+  "scripts": {
+    "package": "serverless package -v --stage $ENVIRONMENT",
+    "deploy": "serverless deploy -v --stage $ENVIRONMENT --force",
+    "smoke-tests": "jasmine"
+  },
+  "dependencies": {
+    "serverless-plugin-git-variables": "^3.3.1"
+  }
+}
