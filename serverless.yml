@@ -23,7 +23,7 @@ functions:
     events:
       - http:
           path: /
-          method: get
+          method: post
   metadata:
     handler: handler.metadata
     environment:
@@ -31,6 +31,12 @@ functions:
     events:
       - http:
           path: /metadata
+          method: get
+  welcome:
+    handler: handler.statistics
+    events:
+      - http:
+          path: /
           method: get
 
 plugins:
@@ -54,7 +60,7 @@ resources:
         DomainName: "${self:custom.appName}.${self:custom.zoneName}"
    ApiGatewayBase:
       Type: "AWS::ApiGateway::BasePathMapping"
-      DependsOn: HandlerLambdaPermissionApiGateway  #https://github.com/serverless/serverless/issues/2233
+      DependsOn: WelcomeLambdaPermissionApiGateway  #https://github.com/serverless/serverless/issues/2233
       Properties:
         BasePath: ''
         DomainName: "${self:custom.appName}.${self:custom.zoneName}"

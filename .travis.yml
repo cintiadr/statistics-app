@@ -9,17 +9,11 @@ before_script:
 
 deploy:
   - provider: script
-    script: "./scripts/deploy.sh dev"
+    script: "./scripts/deploy.sh"
     skip_cleanup: true
     on:
       branch: master
-  - provider: script
-    script: "./scripts/deploy.sh prd"
-    skip_cleanup: true
-    on:
-      branch: production
 
 branches:
   only:
   - master
-  - production
