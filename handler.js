@@ -1,9 +1,28 @@
 'use strict';
 
-const {generateStatistics} = require('./statistics');
+const {calculate} = require('./statistics');
 
 module.exports.statistics = (event, context, callback) => {
-  generateStatistics(event, callback);
+  try {
+    console.log("=== Request body: ===");
+    console.log(event.body);
+    console.log("===\n");
+
+    const stats = calculate(JSON.parse(event.body));
+
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(stats),
+    };
+    console.log("=== Response body: ===");
+    console.log(response);
+    console.log("===\n");
+    callback(null, response);
+    
+  } catch (err) {
+    console.log(err);
+    callback(err);
+  }
 };
 
 module.exports.welcome = (event, context, callback) => {
@@ -30,6 +49,5 @@ module.exports.metadata = (event, context, callback) => {
       },
     }),
   };
-  console.log(event);
   callback(null, response);
 };

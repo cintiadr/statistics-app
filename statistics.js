@@ -1,72 +1,63 @@
 'use strict';
 
-// Imports raw data into an map indexed by ID
-module.exports.generateMap = (data) => {
-  const temperatures = {};
-
-  for (const entry of data) {
-    const key = entry['id'];
-    const value = entry['temperature'];
-
-    if (isNaN(value)){
-      throw new Error(`Entry [${entry['id']}:${entry['timestamp']}] doesn't have a valid number`);
-    }
-
-    temperatures[key] = temperatures[key] || [];
-    temperatures[key].push(value);
-  }
-
-  for (const key in temperatures) {
-    // ensure negative numbers are validated
-    temperatures[key].sort((a, b) => a - b);
-  }
-
-  return temperatures;
-}
+const {parseData} = require('./parseData');
 
 
 // Calculates average for given array
 module.exports.calculateAverage = (temperatures) => {
+
+  if (temperatures.length == 0){
+    throw new Error('Empty array.');
+  }
+
   const total = temperatures.reduce((a, b) => a + b);
-  return (total/temperatures.length).toFixed(2);
+  return parseFloat((total/temperatures.length).toFixed(2));
 }
 
 // Calculates median for given array
 module.exports.calculateMedian = (temperatures) => {
+  if (temperatures.length == 0){
+    throw new Error('Empty array.');
+  }
+
   // floor as array indices starts in zero
   const halfIndex = Math.floor(temperatures.length/2)
 
   // Odd array length
   if (temperatures.length % 2) {
-      return temperatures[halfIndex].toFixed(2);
+      return temperatures[halfIndex];
   } else {
-      return ((temperatures[halfIndex-1] + temperatures[halfIndex]) / 2).toFixed(2);
+      return parseFloat(((temperatures[halfIndex-1] + temperatures[halfIndex]) / 2).toFixed(2));
   }
 }
 
 // Calculates mode for given array
 module.exports.calculateMode = (temperatures) => {
 
+  if (temperatures.length == 0){
+    throw new Error('Empty array.');
+  }
+
   var occurrencesPerNumber = temperatures.reduce((occurrences, entry) => {
     occurrences[entry] = (occurrences[entry] || 0) + 1;
     return occurrences;
   }, {});
 
-  console.log("=== Number of occurrences: ===");
+  console.log("=== Occurrences per temperature: ===");
   console.log(occurrencesPerNumber);
   console.log("===\n");
 
 
-  const tempsPerCount = {}
-  for (const temperature in occurrencesPerNumber){
-    const key = occurrencesPerNumber[temperature];
-    const value = temperature;
+  const tempsPerCount = Object.keys(occurrencesPerNumber).reduce((tempsPerCount,temperature)  => {
+    const count = occurrencesPerNumber[temperature];
 
-    tempsPerCount[key] = tempsPerCount[key] || [];
-    tempsPerCount[key].push(value);
-  }
+    tempsPerCount[count] = tempsPerCount[count] || [];
+    tempsPerCount[count].push(parseFloat(temperature));
 
-  console.log("=== Temperatures per count: ===");
+    return tempsPerCount;
+  }, {});
+
+  console.log("=== Temperatures per number of occurrences: ===");
   console.log(tempsPerCount);
 
   // Discovering biggest number of occurrences
@@ -79,9 +70,9 @@ module.exports.calculateMode = (temperatures) => {
   }
 }
 
-module.exports.generateStatistics = (event, callback) => {
+module.exports.calculate = (event) => {
 
-  const temperaturesMap = this.generateMap(event);
+  const temperaturesMap = parseData(event);
   console.log("=== Imported temperatures: ===");
   console.log(temperaturesMap);
   console.log("===\n");
@@ -101,10 +92,6 @@ module.exports.generateStatistics = (event, callback) => {
   console.log(stats);
   console.log("===\n");
 
-  const response = {
-    statusCode: 200,
-    body: stats,
-  };
-
-  callback(null, response);
+  console.log("Success calculating stats.");
+  return stats;
 }

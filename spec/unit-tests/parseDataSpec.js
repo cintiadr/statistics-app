@@ -1,6 +1,6 @@
 'use strict';
 
-const {generateMap} = require('../../statistics');
+const {parseData} = require('../../parseData');
 
 const inputPath = '../input-data/'
 const outputPath = '../imported-data/'
@@ -11,7 +11,7 @@ describe("Input", function() {
     it("should return ordered array", function(done) {
       const input = require(inputPath + 'original.json');
       const expected = require(outputPath + 'original.json');
-      const actual = generateMap(input);
+      const actual = parseData(input);
       expect(actual).toEqual(expected);
       done();
     });
@@ -21,7 +21,7 @@ describe("Input", function() {
     it("should return ordered array", function(done) {
       const input = require(inputPath + 'duplicates.json');
       const expected = require(outputPath + 'duplicates.json');
-      const actual = generateMap(input);
+      const actual = parseData(input);
       expect(actual).toEqual(expected);
       done();
     });
@@ -31,7 +31,7 @@ describe("Input", function() {
     it("should return empty array", function(done) {
       const input = require(inputPath + 'empty.json');
       const expected = {};
-      const actual = generateMap(input);
+      const actual = parseData(input);
       expect(actual).toEqual(expected);
       done();
     });
@@ -41,7 +41,7 @@ describe("Input", function() {
     it("should ordered array", function(done) {
       const input = require(inputPath + 'numbers.json');
       const expected = require(outputPath + 'numbers.json');
-      const actual = generateMap(input);
+      const actual = parseData(input);
       expect(actual).toEqual(expected);
       done();
     });
@@ -50,7 +50,7 @@ describe("Input", function() {
   describe("with invalid data", function() {
     it("should return error", function(done) {
       const input = require(inputPath + 'invalid.json');
-      expect(() => generateMap(input)).toThrowError();
+      expect(() => parseData(input)).toThrowError();
       done();
     });
   });

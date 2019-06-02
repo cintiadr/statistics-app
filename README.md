@@ -1,7 +1,6 @@
 # Statistics application
 
-TODO: fix build
-[![Build Status](https://travis-ci.org/cintiadr/sample-lambda-app.svg?branch=master)](https://travis-ci.org/cintiadr/sample-lambda-app)
+[![Build Status](https://travis-ci.org/cintiadr/statistics-app.svg?branch=master)](https://travis-ci.org/cintiadr/statistics-app)
 
 ## Design Considerations
 
@@ -37,13 +36,17 @@ because they are not changing state, as I don't care how if we receive duplicate
 
 This lambda doesn't have access to secrets or privileged data, I decided to not put it inside a VPC.
 
+This application prints the output extensively in logs; my understanding is that it's not private data,
+so it's ideal at least of first stages of rollout. Also, I decided to not do any validation in timestamp (even if it's duplicated) and I fail the whole process if there's at least one temperature which is not a number.
+I didn't want to add any verification about valid numbers as the requirements didn't specify the unit used.
+
+There's no configuration for authentication. Assuming that's required, it could be done reasonably well from API gateway.
+
+
 TODO:
-  - Auth
   - Size of package POST
   - Memory size and timeout are not being configured;
-  - Input validation (same data) GIGO
-  - Fail fast
-  - Data in logs
+  - Round up/down
 
 I'm following the [Serverless Testing guide](https://serverless.com/framework/docs/providers/aws/guide/testing/). Smoke tests after deployment are done using Jasmine framework.
 
@@ -55,7 +58,7 @@ I'm following the [Serverless Testing guide](https://serverless.com/framework/do
 
 All you have to do is sending the file via post.
 
-`curl -X POST https://statistics.cintia.me --data @tests/example-data/original.json`
+`curl -v -X POST https://statistics.cintia.me --data @spec/input-data/original.json | jq`
 
 
 ## Development and deployment
@@ -78,7 +81,7 @@ If you are deploying to your own AWS account, also:
 #### Running 'lambda' locally
 
 Running locally sending a file (as sort of an integration tests):
-`npm run local-run -- --path spec/example-data/original.json`
+`npm run local-run -- --path spec/input-lambda-data/example.json`
 
 #### Deploying changes to AWS
 
@@ -96,4 +99,4 @@ To call all smoke tests:
 `npm run smoke-tests`
 
 Or call lambda remotely individually:
-`npm run run -- --path tests/example-data/original.json`
+`npm run run -- --path spec/input-lambda-data/example.json`
