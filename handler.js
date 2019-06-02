@@ -18,10 +18,17 @@ module.exports.statistics = (event, context, callback) => {
     console.log(response);
     console.log("===\n");
     callback(null, response);
-    
+
   } catch (err) {
     console.log(err);
-    callback(err);
+    const response = {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: err.message,
+        status: "error"
+      })
+    };
+    callback(null, response);
   }
 };
 
