@@ -42,6 +42,8 @@ TODO:
   - Size of package POST
   - Memory size and timeout are not being configured;
   - Input validation (same data) GIGO
+  - Fail fast
+  - Data in logs
 
 I'm following the [Serverless Testing guide](https://serverless.com/framework/docs/providers/aws/guide/testing/). Smoke tests after deployment are done using Jasmine framework.
 
