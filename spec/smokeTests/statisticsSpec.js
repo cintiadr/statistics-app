@@ -1,9 +1,9 @@
 var request = require("request");
 
-var pjson = require('../conf.json');
+var pjson = require('../../conf.json');
 
 
-var base_url = "https://" + process.env.ENVIRONMENT + "." + pjson.zoneName
+var base_url = "https://" + pjson.appName + "." + pjson.zoneName
 
 describe("Hello World Server", function() {
   describe("GET /", function() {
