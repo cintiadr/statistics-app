@@ -1,11 +1,9 @@
 'use strict';
 
-const Statistics = require('./statistics');
-const statistics = new Statistics();
-
+const generateStatistics = require('./statistics');
 
 module.exports.statistics = (event, context, callback) => {
-  statistics.generate(event, callback);
+  generateStatistics(event, callback);
 };
 
 module.exports.welcome = (event, context, callback) => {

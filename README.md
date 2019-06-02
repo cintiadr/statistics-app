@@ -14,7 +14,7 @@ I want to show things that are _not application code_ required to have a proper 
 
 AWS lambda is a cost-effective and quick way for me to have a secure, robust, scalable and reliable
 small application deployed. As in this case we can afford the cold starts and natural variances in performances,
-it's a great use case. 
+it's a great use case.
 
 Logs and basic metrics are automatically deployed to cloudwatch by default,
 solving a few of the problems. While cloudwatch is far from perfect, it's a decent start for me.
@@ -39,6 +39,7 @@ TODO:
   - Auth
   - Size of package POST
   - Memory size and timeout are not being configured;
+  - Input validation (same data) GIGO
 
 I'm following the [Serverless Testing guide](https://serverless.com/framework/docs/providers/aws/guide/testing/). Smoke tests after deployment are done using Jasmine framework.
 
