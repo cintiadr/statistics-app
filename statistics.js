@@ -1,11 +1,15 @@
 'use strict';
 
-function generateMap(data) {
+module.exports.generateMap = (data) => {
   const temperatures = {};
 
-  for (var i = 0; i < data.length; i++) {
-    const key = data[i]['id'];
-    const value = data[i]['temperature'];
+  for (const entry of data) {
+    const key = entry['id'];
+    const value = entry['temperature'];
+
+    if (isNaN(value)){
+      throw new Error(`Entry [${entry['id']}:${entry['timestamp']}] doesn't have a valid number`);
+    }
 
     temperatures[key] = temperatures[key] || [];
     temperatures[key].push(value);
@@ -18,7 +22,7 @@ function generateMap(data) {
   return temperatures;
 }
 
-function generate(event, callback) {
+module.exports.generateStatistics = (event, callback) => {
 
   const temperaturesMap = generateMap(event);
   console.log(temperaturesMap);
@@ -30,5 +34,3 @@ function generate(event, callback) {
 
   callback(null, response);
 }
-
-module.exports = generate;

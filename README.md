@@ -30,6 +30,8 @@ I chose node because (1) I already had an example in node; (2) the lambda cold s
 (3) the language is pretty inclusive and doesn't scare anyone who already uses other imperative languages;
 (4) support with serverless is great. That said I'm far from a node expert.
 
+As it's a pretty basic application, I used just npm and jasmine for the development lifecycle.
+
 There's no [de-duplication mechanism](https://blog.sungardas.com/CTOLabs/2017/06/run-lambda-run/) for lambda
 because they are not changing state, as I don't care how if we receive duplicate invocations.
 
@@ -74,7 +76,7 @@ If you are deploying to your own AWS account, also:
 #### Running 'lambda' locally
 
 Running locally sending a file (as sort of an integration tests):
-`serverless invoke local -f handler --path tests/example-data/original.json`
+`npm run local-run -- --path spec/example-data/original.json`
 
 #### Deploying changes to AWS
 
@@ -92,4 +94,4 @@ To call all smoke tests:
 `npm run smoke-tests`
 
 Or call lambda remotely individually:
-`serverless invoke -f handler --path tests/example-data/original.json`
+`npm run run -- --path tests/example-data/original.json`

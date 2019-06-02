@@ -10,7 +10,10 @@
   "scripts": {
     "deploy": "serverless deploy -v --force",
     "destroy": "serverless remove",
-    "smoke-tests": "jasmine"
+    "smoke-tests": "jasmine --config=spec/smoke-tests/jasmine.json",
+    "unit-tests": "jasmine --config=spec/unit-tests/jasmine.json",
+    "local-run": "serverless invoke local -f handler",
+    "run": "serverless invoke -f handler"
   },
   "dependencies": {
     "serverless-plugin-git-variables": "^3.3.1"
