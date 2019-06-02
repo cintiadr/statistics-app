@@ -23,11 +23,13 @@ Biggest risk for me is denial-by-credit-card, but so far the alarms for billing
 on my account haven't yield anything weird. I could be a lot more aggressive protecting myself,
 but my threat model doesn't justify it.
 
-I used the Serverless framework, because Serverless has so many more features than SAM. Also better support, community. It's a no-brainer for me.
+I used the Serverless framework, because Serverless has so many more features than SAM. Also better support, community. It's a no-brainer for me. I'm following the [Serverless Testing guide](https://serverless.com/framework/docs/providers/aws/guide/testing/). Smoke tests after deployment are done using Jasmine framework.
 
 I chose node because (1) I already had an example in node; (2) the lambda cold starts times are not bad;
 (3) the language is pretty inclusive and doesn't scare anyone who already uses other imperative languages;
 (4) support with serverless is great. That said I'm far from a node expert.
+
+Unfortunately the floating number rounding in node is slightly different than usual, where a '3.775' will be rounded to '3.77' instead of '3.78'.
 
 As it's a pretty basic application, I used just npm and jasmine for the development lifecycle.
 
@@ -42,13 +44,8 @@ I didn't want to add any verification about valid numbers as the requirements di
 
 There's no configuration for authentication. Assuming that's required, it could be done reasonably well from API gateway.
 
+API Gateway + Lambda have an upper limit of around 6MB for the data. I assume that's more then enough, and it uses less than 100MB to process that.
 
-TODO:
-  - Size of package POST
-  - Memory size and timeout are not being configured;
-  - Round up/down
-
-I'm following the [Serverless Testing guide](https://serverless.com/framework/docs/providers/aws/guide/testing/). Smoke tests after deployment are done using Jasmine framework.
 
 ## Using the production environment
 
