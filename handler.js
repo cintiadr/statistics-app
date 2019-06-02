@@ -16,8 +16,6 @@ module.exports.welcome = (event, context, callback) => {
     },
     body: 'It\'s alive. Please send data via POST.',
   };
-
-  console.log(event);
   callback(null, response);
 };
 

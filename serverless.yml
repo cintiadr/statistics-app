@@ -33,7 +33,7 @@ functions:
           path: /metadata
           method: get
   welcome:
-    handler: handler.statistics
+    handler: handler.welcome
     events:
       - http:
           path: /

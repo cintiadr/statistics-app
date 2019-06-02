@@ -16,7 +16,7 @@ describe("Hello World Server", function() {
 
     it("returns Hello World", function(done) {
       request.get(base_url, function(error, response, body) {
-        expect(body).toBe("The actual hello world, as expected.");
+        expect(body).toBe("It's alive. Please send data via POST.");
         done();
       });
     });
